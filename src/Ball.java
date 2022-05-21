@@ -136,7 +136,7 @@ public class Ball implements Sprite {
         if (collisionInfo != null) {
             Point nextMove = this.calculateNextMove();
             if (nextMove.checkIfNextMoveIsInTheCollidable(collisionInfo.collisionObject())) {
-                this.setVelocity(collisionInfo.collisionObject().hit(collisionInfo.collisionPoint(), this.v));
+                this.setVelocity(collisionInfo.collisionObject().hit(this, collisionInfo.collisionPoint(), this.v));
             }
 
         } else {

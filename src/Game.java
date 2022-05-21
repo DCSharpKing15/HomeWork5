@@ -4,16 +4,26 @@ import biuoop.Sleeper;
 
 import java.awt.*;
 
+import java.util.ArrayList;
+
+
 public class Game {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
     private Sleeper sleeper;
     private Paddle paddle;
+    private Counter counter;
+    private BlockRemover blockRemover;
+    private final int INITIAL_BLOCKS = 57;
 
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
+
+        this.counter = new Counter();
+        this.counter.increase(INITIAL_BLOCKS);
+        this.blockRemover = new BlockRemover(this, counter);
     }
 
     public void addCollidable(Collidable c) {
@@ -32,6 +42,7 @@ public class Game {
     // Initialize a new game: create the Blocks and Ball (and Paddle)
     // and add them to the game.
     public void initialize() {
+
         this.gui = new GUI("Arkanoid", 800, 600);
         this.sleeper = new Sleeper();
         this.paddle = new Paddle(this.gui);
@@ -40,7 +51,7 @@ public class Game {
         ball.setVelocity(3, 4);
 
 
-        Ball ball2 = new Ball(new Point(400, 100), 6, Color.gray);
+        Ball ball2 = new Ball(new Point(400, 57), 6, Color.gray);
         ball2.setVelocity(4, 4);
 
         Block upperSide = new Block(new Rectangle(new Point(0, 0), 800, 50), Color.gray);
@@ -75,6 +86,8 @@ public class Game {
                 rectangle = new Rectangle(new Point(165 + 45 * (i + j + 1), 100 + 30 * (i + 1)), 45, 30);
                 block = new Block(rectangle, color);
                 block.addToGame(this);
+
+                block.addHitListener(this.blockRemover);
             }
         }
         ball.setStartPerimeterX(50);
@@ -97,10 +110,9 @@ public class Game {
 
     // Run the game -- start the animation loop.
     public void run() {
-        //...
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
-        while (true) {
+        while (counter.getValue() > 0) {
             long startTime = System.currentTimeMillis(); // timing
 
             DrawSurface d = gui.getDrawSurface();
@@ -122,5 +134,19 @@ public class Game {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
         }
+        gui.close();
+    }
+
+
+    public void removeCollidable(Collidable c) {
+        this.environment.getCollidableList().remove(c);
+    }
+
+    public void removeSprite(Sprite s) {
+        this.sprites.getSpriteList().remove(s);
+    }
+
+    public Counter getCounter() {
+        return this.counter;
     }
 }

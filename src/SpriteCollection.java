@@ -13,6 +13,10 @@ public class SpriteCollection {
         this.spriteList.add(s);
     }
 
+    public java.util.List<Sprite> getSpriteList() {
+        return this.spriteList;
+    }
+
     // call timePassed() on all sprites.
     public void notifyAllTimePassed() {
         for (int i = 0; i < this.spriteList.size(); i++) {

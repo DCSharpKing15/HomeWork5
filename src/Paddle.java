@@ -74,24 +74,7 @@ public class Paddle implements Sprite, Collidable {
         return this.block.getCollisionRectangle();
     }
 
-    /*public Velocity OldHit(Point collisionPoint, Velocity currentVelocity) {
-        // if the collision is with a horizontal side of the "Block" (can be also with a vertical side)
-        if ((int) this.block.getCollisionRectangle().getUpperLeft().getY() == (int) collisionPoint.getY() ||
-                (int) this.block.getCollisionRectangle().lowerLeft().getY() == (int) collisionPoint.getY()) {
-            currentVelocity = new Velocity(currentVelocity.getDx(), (-1) * currentVelocity.getDy());
-        }
-
-        // if the collision is with a vertical side of the "Block" (can be also with a horizontal side)
-        if ((int) this.block.getCollisionRectangle().getUpperLeft().getX() == (int) collisionPoint.getX() ||
-                (int) this.block.getCollisionRectangle().upperRight().getX() == (int) collisionPoint.getX()) {
-            currentVelocity = new Velocity((-1) * currentVelocity.getDx(), currentVelocity.getDy());
-
-        }
-
-        return currentVelocity;
-    }*/
-
-    public Velocity hit(Point collisionPoint, Velocity currentVelocity) {
+    public Velocity hit(Ball hitter, Point collisionPoint, Velocity currentVelocity) {
         double angle;
         double speed;
         // if the collision is with a horizontal side of the "Block" (can be also with a vertical side)
