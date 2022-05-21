@@ -22,6 +22,11 @@ public class Game {
     private BallRemover ballRemover;
     private final int INITIAL_BALLS = 3;
 
+    private Counter scoreCounter;
+    private ScoreTrackingListener scoreTrackingListener;
+
+    private final int SCORE_PER_HIT = 5;
+
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
@@ -34,7 +39,8 @@ public class Game {
         this.ballCounter.increase(this.INITIAL_BALLS);
         this.ballRemover = new BallRemover(this, this.ballCounter);
 
-
+        this.scoreCounter = new Counter();
+        this.scoreTrackingListener = new ScoreTrackingListener(this.scoreCounter);
     }
 
     public void addCollidable(Collidable c) {
@@ -70,7 +76,7 @@ public class Game {
 
         Block upperSide = new Block(new Rectangle(new Point(0, 0), 800, 50), Color.gray);
         Block leftSide = new Block(new Rectangle(new Point(0, 50), 50, 550), Color.gray);
-        Block lowerSide = new Block(new Rectangle(new Point(50, 550), 700, 50), Color.gray);
+        Block lowerSide = new Block(new Rectangle(new Point(50, 570), 700, 50), Color.gray);
         Block rightSide = new Block(new Rectangle(new Point(750, 50), 50, 550), Color.gray);
 
         upperSide.addToGame(this);
@@ -106,8 +112,13 @@ public class Game {
                 block.addToGame(this);
 
                 block.addHitListener(this.blockRemover);
+                block.addHitListener(this.scoreTrackingListener);
             }
         }
+        block = new Block(new Rectangle(new Point(0, 0), 800, 30), Color.white);
+        ScoreIndicator scoreIndicator = new ScoreIndicator(block, this);
+        scoreIndicator.addToGame(this);
+
         ball.setStartPerimeterX(50);
         ball.setStartPerimeterY(50);
         ball.setEndPerimeterX(750);
@@ -133,6 +144,7 @@ public class Game {
         ball3.setGameEnvironment(this.environment);
         ball3.addToGame(this);
 
+
     }
 
     // Run the game -- start the animation loop.
@@ -154,12 +166,18 @@ public class Game {
             this.sprites.notifyAllTimePassed();
             this.paddle.timePassed();
 
+            this.scoreCounter.decrease(this.scoreCounter.getValue());
+            this.scoreCounter.increase((this.INITIAL_BLOCKS - this.blockCounter.getValue()) * this.SCORE_PER_HIT);
+
             // timing
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
                 sleeper.sleepFor(milliSecondLeftToSleep);
             }
+        }
+        if (this.ballCounter.getValue() == 0) {
+            this.scoreCounter.increase(100);
         }
         gui.close();
         return;
@@ -188,5 +206,9 @@ public class Game {
 
     public int getINITIAL_BALLS() {
         return this.INITIAL_BALLS;
+    }
+
+    public Counter getScoreCounter() {
+        return this.scoreCounter;
     }
 }
