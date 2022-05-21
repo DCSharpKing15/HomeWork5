@@ -8,7 +8,7 @@ public class Paddle implements Sprite, Collidable {
     private KeyboardSensor keyboard;
     private Block block;
     private Color color;
-    private final int MOVE_PADDLE_X = 5;
+    private final int MOVE_PADDLE_X = 7;
     private final int START_PERIMETER_X = 50;
     private final int END_PERIMETER_X = 750;
     private final int START_PERIMETER_Y = 50;

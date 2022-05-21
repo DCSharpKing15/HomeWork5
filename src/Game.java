@@ -13,17 +13,28 @@ public class Game {
     private GUI gui;
     private Sleeper sleeper;
     private Paddle paddle;
-    private Counter counter;
+
+    private Counter blockCounter;
     private BlockRemover blockRemover;
     private final int INITIAL_BLOCKS = 57;
+
+    private Counter ballCounter;
+    private BallRemover ballRemover;
+    private final int INITIAL_BALLS = 3;
 
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
 
-        this.counter = new Counter();
-        this.counter.increase(INITIAL_BLOCKS);
-        this.blockRemover = new BlockRemover(this, counter);
+        this.blockCounter = new Counter();
+        this.blockCounter.increase(this.INITIAL_BLOCKS);
+        this.blockRemover = new BlockRemover(this, this.blockCounter);
+
+        this.ballCounter = new Counter();
+        this.ballCounter.increase(this.INITIAL_BALLS);
+        this.ballRemover = new BallRemover(this, this.ballCounter);
+
+
     }
 
     public void addCollidable(Collidable c) {
@@ -51,8 +62,11 @@ public class Game {
         ball.setVelocity(3, 4);
 
 
-        Ball ball2 = new Ball(new Point(400, 57), 6, Color.gray);
+        Ball ball2 = new Ball(new Point(400, 60), 6, Color.blue);
         ball2.setVelocity(4, 4);
+
+        Ball ball3 = new Ball(new Point(300, 500), 5, Color.green);
+        ball3.setVelocity(-3, -4);
 
         Block upperSide = new Block(new Rectangle(new Point(0, 0), 800, 50), Color.gray);
         Block leftSide = new Block(new Rectangle(new Point(0, 50), 50, 550), Color.gray);
@@ -63,6 +77,10 @@ public class Game {
         leftSide.addToGame(this);
         lowerSide.addToGame(this);
         rightSide.addToGame(this);
+
+        Block deathRegion = new Block(new Rectangle(new Point(50, 550), 700, 20), Color.black);
+        deathRegion.addToGame(this);
+        deathRegion.addHitListener(ballRemover);
 
         Color color;
         Block block;
@@ -106,16 +124,25 @@ public class Game {
 
         ball2.setGameEnvironment(this.environment);
         ball2.addToGame(this);
+
+        ball3.setStartPerimeterX(50);
+        ball3.setStartPerimeterY(50);
+        ball3.setEndPerimeterX(750);
+        ball3.setEndPerimeterY(550);
+
+        ball3.setGameEnvironment(this.environment);
+        ball3.addToGame(this);
+
     }
 
     // Run the game -- start the animation loop.
     public void run() {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
-        while (counter.getValue() > 0) {
+        while ((this.blockCounter.getValue() > 0) && (this.ballCounter.getValue() > 0)) {
             long startTime = System.currentTimeMillis(); // timing
 
-            DrawSurface d = gui.getDrawSurface();
+            DrawSurface d = this.gui.getDrawSurface();
             d.setColor(Color.orange);
             d.fillRectangle(0, 0, 800, 600);
 
@@ -135,6 +162,7 @@ public class Game {
             }
         }
         gui.close();
+        return;
     }
 
 
@@ -146,7 +174,19 @@ public class Game {
         this.sprites.getSpriteList().remove(s);
     }
 
-    public Counter getCounter() {
-        return this.counter;
+    public Counter getBlockCounter() {
+        return this.blockCounter;
+    }
+
+    public int getINITIAL_BLOCKS() {
+        return this.INITIAL_BLOCKS;
+    }
+
+    public Counter getBallCounter() {
+        return this.ballCounter;
+    }
+
+    public int getINITIAL_BALLS() {
+        return this.INITIAL_BALLS;
     }
 }

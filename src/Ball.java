@@ -153,4 +153,8 @@ public class Ball implements Sprite {
     public void addToGame(Game g) {
         g.addSprite(this);
     }
+
+    public void removeFromGame(Game game) {
+        game.removeSprite(this);
+    }
 }

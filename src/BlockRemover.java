@@ -3,13 +3,12 @@
 public class BlockRemover implements HitListener {
     private Game game;
     private Counter remainingBlocks;
-    private final int INITIAL_BLOCKS = 57;
 
     public BlockRemover(Game game, Counter removedBlocks) {
         this.game = game;
 
         this.remainingBlocks = new Counter();
-        this.remainingBlocks.increase(INITIAL_BLOCKS - removedBlocks.getValue());
+        this.remainingBlocks.increase(game.getINITIAL_BLOCKS() - removedBlocks.getValue());
     }
 
     // Blocks that are hit should be removed
@@ -20,6 +19,6 @@ public class BlockRemover implements HitListener {
         beingHit.removeFromGame(game);
 
         remainingBlocks.decrease(1);
-        this.game.getCounter().decrease(1);
+        this.game.getBlockCounter().decrease(1);
     }
 }
