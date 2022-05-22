@@ -5,7 +5,7 @@ import biuoop.Sleeper;
 import java.awt.*;
 import java.util.Random;
 
-public class MultipleFramesBouncingBallsAnimation {
+public class MultipleFramesBouncingBallsAnimationXXX {
 
     private final static int startPerimeterX1 = 50;
     private final static int endPerimeterX1 = 500;

@@ -2,7 +2,7 @@ import biuoop.GUI;
 import biuoop.DrawSurface;
 import biuoop.Sleeper;
 
-public class BouncingBallAnimation {
+public class BouncingBallAnimationXXX {
 
     //draws an animation of a ball
     static private void drawAnimation(Point start, double dx, double dy) {

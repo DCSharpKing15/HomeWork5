@@ -1,7 +1,7 @@
 /**
  * This class does some simple tessting of the Point and Line classes.
  */
-public class GeometryTester {
+public class GeometryTesterXXX {
 
     final static double Comparison_threshold = 0.00001;
 
@@ -11,7 +11,7 @@ public class GeometryTester {
      * @return
      */
     public static boolean doubleEquals(double a, double b) {
-        return Math.abs(a - b) < GeometryTester.Comparison_threshold;
+        return Math.abs(a - b) < GeometryTesterXXX.Comparison_threshold;
     }
 
     /**
@@ -104,7 +104,7 @@ public class GeometryTester {
      * @param args ignored.
      */
     public static void main(String[] args) {
-        GeometryTester tester = new GeometryTester();
+        GeometryTesterXXX tester = new GeometryTesterXXX();
         if (tester.testPoint() && tester.testLine())
             System.out.println("Test Completed Successfully!");
         else

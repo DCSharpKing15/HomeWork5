@@ -4,7 +4,7 @@ import biuoop.GUI;
 import java.awt.*;
 import java.util.Random;
 
-public class AbstractArtDrawing {
+public class AbstractArtDrawingXXX {
 
     //generates a new random line
     public static Line generateRandomLine() {
