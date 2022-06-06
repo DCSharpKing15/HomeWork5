@@ -110,7 +110,6 @@ public class Ball implements Sprite {
         this.moveOneStep();
     }
 
-
     // trajectory -- returns the trajectory of the ball "like it didn't hit any obstacles"
     public Line trajectory() {
         Point endOfTrajectory = this.center;//will be the ent of the trajectory
@@ -127,7 +126,6 @@ public class Ball implements Sprite {
         Point copyCenter = this.center;
         return this.getVelocity().applyToPoint(this.getVelocity().applyToPoint(copyCenter));
     }
-
 
     // moveOneStep -- moves the ball according to the perimeter and velocity(if its about to get out
     // the dx changes to -dx or dy changes to -dy)

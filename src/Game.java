@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-public class Game {
+public class Game implements Animation {
     private SpriteCollection sprites;
     private GameEnvironment environment;
     private GUI gui;
@@ -26,6 +26,9 @@ public class Game {
     private ScoreTrackingListener scoreTrackingListener;
 
     private final int SCORE_PER_HIT = 5;
+
+    private AnimationRunner runner;
+    private boolean running;
 
     public Game() {
         this.sprites = new SpriteCollection();
@@ -63,16 +66,17 @@ public class Game {
         this.gui = new GUI("Arkanoid", 800, 600);
         this.sleeper = new Sleeper();
         this.paddle = new Paddle(this.gui);
+        this.runner = new AnimationRunner(this.gui, this.sleeper);
 
-        Ball ball = new Ball(new Point(100, 100), 5, Color.black);
-        ball.setVelocity(3, 4);
+        Ball ball = new Ball(new Point(200, 400), 4, Color.black);
+        ball.setVelocity(-3, -4);
 
 
-        Ball ball2 = new Ball(new Point(400, 60), 6, Color.blue);
+        Ball ball2 = new Ball(new Point(400, 60), 4, Color.blue);
         ball2.setVelocity(4, 4);
 
-        Ball ball3 = new Ball(new Point(300, 500), 5, Color.green);
-        ball3.setVelocity(-3, -4);
+        Ball ball3 = new Ball(new Point(200, 500), 4, Color.green);
+        ball3.setVelocity(3, -4);
 
         Block upperSide = new Block(new Rectangle(new Point(0, 0), 800, 50), Color.gray);
         Block leftSide = new Block(new Rectangle(new Point(0, 50), 50, 550), Color.gray);
@@ -149,37 +153,9 @@ public class Game {
 
     // Run the game -- start the animation loop.
     public void run() {
-        int framesPerSecond = 60;
-        int millisecondsPerFrame = 1000 / framesPerSecond;
-        while ((this.blockCounter.getValue() > 0) && (this.ballCounter.getValue() > 0)) {
-            long startTime = System.currentTimeMillis(); // timing
-
-            DrawSurface d = this.gui.getDrawSurface();
-            d.setColor(Color.orange);
-            d.fillRectangle(0, 0, 800, 600);
-
-            this.paddle.addToGame(this);
-
-            this.sprites.drawAllOn(d);
-            this.paddle.drawOn(d);
-            gui.show(d);
-            this.sprites.notifyAllTimePassed();
-            this.paddle.timePassed();
-
-            this.scoreCounter.decrease(this.scoreCounter.getValue());
-            this.scoreCounter.increase((this.INITIAL_BLOCKS - this.blockCounter.getValue()) * this.SCORE_PER_HIT);
-
-            // timing
-            long usedTime = System.currentTimeMillis() - startTime;
-            long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
-            if (milliSecondLeftToSleep > 0) {
-                sleeper.sleepFor(milliSecondLeftToSleep);
-            }
-        }
-        if (this.ballCounter.getValue() == 0) {
-            this.scoreCounter.increase(100);
-        }
-        gui.close();
+        //this.createBallsOnTopOfPaddle(); // or a similar method<---------------------------------do that later
+        this.running = true;
+        this.runner.run(this);
         return;
     }
 
@@ -210,5 +186,35 @@ public class Game {
 
     public Counter getScoreCounter() {
         return this.scoreCounter;
+    }
+
+    public boolean shouldStop() {
+        return !this.running;
+    }
+
+    public void doOneFrame(DrawSurface d) {
+        d.setColor(Color.orange);
+        d.fillRectangle(0, 0, 800, 600);
+
+        this.paddle.addToGame(this);
+
+        this.sprites.drawAllOn(d);
+        this.paddle.drawOn(d);
+
+        this.sprites.notifyAllTimePassed();
+        this.paddle.timePassed();
+
+        this.scoreCounter.decrease(this.scoreCounter.getValue());
+        this.scoreCounter.increase((this.INITIAL_BLOCKS - this.blockCounter.getValue()) * this.SCORE_PER_HIT);
+
+        if (this.blockCounter.getValue() == 0) {
+            this.running = false;
+            this.scoreCounter.increase(100);
+            this.sleeper.sleepFor(100);
+        } else if (this.ballCounter.getValue() == 0) {
+            this.running = false;
+        } else {
+            this.running = true;
+        }
     }
 }
