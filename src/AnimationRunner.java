@@ -29,7 +29,6 @@ public class AnimationRunner {
                 this.sleeper.sleepFor(milliSecondLeftToSleep);
             }
         }
-        gui.close();
         return;
     }
 }

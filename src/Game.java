@@ -1,5 +1,6 @@
 import biuoop.DrawSurface;
 import biuoop.GUI;
+import biuoop.KeyboardSensor;
 import biuoop.Sleeper;
 
 import java.awt.*;
@@ -30,6 +31,11 @@ public class Game implements Animation {
     private AnimationRunner runner;
     private boolean running;
 
+    private KeyboardSensor keyboard;
+
+    private final int COUNT_FROM = 3;
+    private final double NUM_OF_SECONDS = 0.005;
+
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
@@ -58,7 +64,6 @@ public class Game implements Animation {
         this.sprites.addSprite(s);
     }
 
-
     // Initialize a new game: create the Blocks and Ball (and Paddle)
     // and add them to the game.
     public void initialize() {
@@ -67,6 +72,7 @@ public class Game implements Animation {
         this.sleeper = new Sleeper();
         this.paddle = new Paddle(this.gui);
         this.runner = new AnimationRunner(this.gui, this.sleeper);
+        this.keyboard = this.gui.getKeyboardSensor();
 
         Ball ball = new Ball(new Point(200, 400), 4, Color.black);
         ball.setVelocity(-3, -4);
@@ -147,18 +153,19 @@ public class Game implements Animation {
 
         ball3.setGameEnvironment(this.environment);
         ball3.addToGame(this);
-
-
     }
 
     // Run the game -- start the animation loop.
     public void run() {
         //this.createBallsOnTopOfPaddle(); // or a similar method<---------------------------------do that later
+        this.runner.run(new CountdownAnimation(NUM_OF_SECONDS, COUNT_FROM, this.sprites)); // countdown before turn starts.
+        // use our runner to run the current animation -- which is one turn of
+        // the game.
         this.running = true;
         this.runner.run(this);
+        gui.close();
         return;
     }
-
 
     public void removeCollidable(Collidable c) {
         this.environment.getCollidableList().remove(c);
@@ -193,6 +200,10 @@ public class Game implements Animation {
     }
 
     public void doOneFrame(DrawSurface d) {
+        if (this.keyboard.isPressed("p")) {
+            this.runner.run(new PauseScreen(this.keyboard));
+        }
+
         d.setColor(Color.orange);
         d.fillRectangle(0, 0, 800, 600);
 
