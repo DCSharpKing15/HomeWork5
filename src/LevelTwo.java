@@ -16,7 +16,6 @@ public class LevelTwo implements LevelInformation {
     private Sprite background;
 
     private List<Block> blocks;
-    private int numberOfBlocksToRemove;
 
     private final Color BACKGROUND_COLOR = Color.white;
 
@@ -86,7 +85,7 @@ public class LevelTwo implements LevelInformation {
 
     @Override
     public int numberOfBalls() {
-        return 10;
+        return this.INITIAL_NUMBER_OF_BALLS;
     }
 
     @Override

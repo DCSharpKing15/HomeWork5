@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 public class LevelThree implements LevelInformation {
-    private final int INITIAL_NUMBER_OF_BALLS = 10;
+    private final int INITIAL_NUMBER_OF_BALLS = 15;
 
     private List<Velocity> initialBallVelocities;
 
@@ -16,7 +16,6 @@ public class LevelThree implements LevelInformation {
     private Sprite background;
 
     private List<Block> blocks;
-    private int numberOfBlocksToRemove;
 
     private final Color BACKGROUND_COLOR = Color.white;
 
@@ -86,7 +85,7 @@ public class LevelThree implements LevelInformation {
 
     @Override
     public int numberOfBalls() {
-        return 10;
+        return this.INITIAL_NUMBER_OF_BALLS;
     }
 
     @Override
