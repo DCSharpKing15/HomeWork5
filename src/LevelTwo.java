@@ -19,6 +19,8 @@ public class LevelTwo implements LevelInformation {
 
     private final Color BACKGROUND_COLOR = Color.white;
 
+    private int numberOfBlocksToRemove;
+
     public LevelTwo() {
         Random random = new Random();
         this.initialBallVelocities = new ArrayList<Velocity>();
@@ -80,7 +82,7 @@ public class LevelTwo implements LevelInformation {
             block = new Block(new Rectangle(new Point(50 + 46 * i + afterMiddle, 300), 46 + atMiddle, 25), color);
             this.blocks.add(block);
         }
-
+        this.numberOfBlocksToRemove = this.blocks.size();
     }
 
     @Override
@@ -120,11 +122,15 @@ public class LevelTwo implements LevelInformation {
 
     @Override
     public int numberOfBlocksToRemove() {
-        return 21;
+        return this.numberOfBlocksToRemove;
     }
 
     public Color getBACKGROUND_COLOR() {
         return this.BACKGROUND_COLOR;
+    }
+
+    public void setCurrentNumOfBlocksToRemove(int numberOfBlocksToRemove) {
+        this.numberOfBlocksToRemove = numberOfBlocksToRemove;
     }
 
 }

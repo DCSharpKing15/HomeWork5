@@ -204,6 +204,9 @@ public class GameLevel implements Animation {
         this.scoreCounter.decrease(this.scoreCounter.getValue());
         this.scoreCounter.increase((this.initialBlocks - this.blockCounter.getValue()) * this.SCORE_PER_HIT);
 
+        //this.levelInformation.setCurrentNumOfBlocksToRemove(this.initialBlocks - this.sprites.spriteList.size() + 6);
+        this.levelInformation.setCurrentNumOfBlocksToRemove(this.blockCounter.getValue());
+
         if (this.blockCounter.getValue() == 0) {
             this.running = false;
             this.scoreCounter.increase(100);

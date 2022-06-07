@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LevelOne implements LevelInformation {
-    private int initialNumberOfBalls;
+    private final int INITIAL_NUMBER_OF_BALLS = 1;
 
     private List<Velocity> initialBallVelocities;
 
@@ -46,11 +46,13 @@ public class LevelOne implements LevelInformation {
         this.blocks.add(block);
 
         this.background = new Block(new Rectangle(new Point(50, 50), 500, 700), this.BACKGROUND_COLOR);
+
+        this.numberOfBlocksToRemove = this.blocks.size();
     }
 
     @Override
     public int numberOfBalls() {
-        return 1;
+        return this.INITIAL_NUMBER_OF_BALLS;
     }
 
     @Override
@@ -85,10 +87,15 @@ public class LevelOne implements LevelInformation {
 
     @Override
     public int numberOfBlocksToRemove() {
-        return 1;
+        return this.numberOfBlocksToRemove;
     }
 
     public Color getBACKGROUND_COLOR() {
         return this.BACKGROUND_COLOR;
+    }
+
+    @Override
+    public void setCurrentNumOfBlocksToRemove(int numberOfBlocksToRemove) {
+        this.numberOfBlocksToRemove = numberOfBlocksToRemove;
     }
 }

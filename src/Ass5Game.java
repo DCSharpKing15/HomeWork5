@@ -12,10 +12,18 @@ public class Ass5Game {
         LevelInformation level4 = new LevelFour();
 
         List<LevelInformation> lIL = new ArrayList<LevelInformation>();
-        lIL.add(level1);
-        lIL.add(level2);
-        lIL.add(level3);
-        lIL.add(level4);
+
+        for (String i : args) {
+            if (i.equals("1")) {
+                lIL.add(level1);
+            } else if (i.equals("2")) {
+                lIL.add(level2);
+            } else if (i.equals("3")) {
+                lIL.add(level3);
+            } else if (i.equals("4")) {
+                lIL.add(level4);
+            }
+        }
 
         GUI gui = new GUI("Arkanoid", 800, 600);
         GameFlow gF = new GameFlow(gui);

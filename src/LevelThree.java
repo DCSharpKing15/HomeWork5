@@ -19,6 +19,8 @@ public class LevelThree implements LevelInformation {
 
     private final Color BACKGROUND_COLOR = Color.white;
 
+    private int numberOfBlocksToRemove;
+
     public LevelThree() {
         Random random = new Random();
         this.initialBallVelocities = new ArrayList<Velocity>();
@@ -81,6 +83,7 @@ public class LevelThree implements LevelInformation {
                 this.blocks.add(block);
             }
         }
+        this.numberOfBlocksToRemove = this.blocks.size();
     }
 
     @Override
@@ -120,10 +123,16 @@ public class LevelThree implements LevelInformation {
 
     @Override
     public int numberOfBlocksToRemove() {
-        return 36;
+        return this.numberOfBlocksToRemove;
     }
 
     public Color getBACKGROUND_COLOR() {
         return this.BACKGROUND_COLOR;
     }
+
+    public void setCurrentNumOfBlocksToRemove(int numberOfBlocksToRemove) {
+        this.numberOfBlocksToRemove = numberOfBlocksToRemove;
+    }
+
+
 }
