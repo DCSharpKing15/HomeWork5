@@ -1,39 +1,43 @@
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class LevelOne implements LevelInformation {
-    private int initialNumberOfBalls;
+public class LevelFour implements LevelInformation {
+    private final int INITIAL_NUMBER_OF_BALLS = 10;
 
     private List<Velocity> initialBallVelocities;
 
-    private final int PADDLE_SPEED = 7;
-    private int PADDLE_WIDTH = 100;
+    private final int PADDLE_SPEED = 1;
+    private int PADDLE_WIDTH = 600;
 
-    private final String LEVEL_NAME = "Direct Hit";
+    private final String LEVEL_NAME = "Wide Hard";
 
     private Sprite background;
 
     private List<Block> blocks;
     private int numberOfBlocksToRemove;
 
-    private final Color BACKGROUND_COLOR = Color.black;
+    private final Color BACKGROUND_COLOR = Color.white;
 
-    public LevelOne() {
+    public LevelFour() {
+        Random random = new Random();
         this.initialBallVelocities = new ArrayList<Velocity>();
-        this.initialBallVelocities.add(Velocity.fromAngleAndSpeed(-Math.PI / 2, 5));
+        int angle;
+        int speed = 5;
+        for (int i = 0; i < this.INITIAL_NUMBER_OF_BALLS; i++) {
+            angle = random.nextInt(181);
+            this.initialBallVelocities.add(Velocity.fromAngleAndSpeed(-angle * Math.PI / 180, speed));
+        }
 
         Block upperSide = new Block(new Rectangle(new Point(0, 0), 800, 50), Color.gray);
         Block leftSide = new Block(new Rectangle(new Point(0, 50), 50, 550), Color.gray);
         Block lowerSide = new Block(new Rectangle(new Point(50, 570), 700, 50), Color.gray);
         Block rightSide = new Block(new Rectangle(new Point(750, 50), 50, 550), Color.gray);
 
-        Block deathRegion = new Block(new Rectangle(new Point(50, 550), 700, 50), Color.black);
+        Block deathRegion = new Block(new Rectangle(new Point(50, 550), 700, 50), Color.white);
 
         Block indicator = new Block(new Rectangle(new Point(0, 0), 800, 30), Color.white);
-
-        Rectangle rectangle = new Rectangle(new Point(385, 150), 30, 30);
-        Block block = new Block(rectangle, Color.red);
 
         this.blocks = new ArrayList<Block>();
 
@@ -43,14 +47,46 @@ public class LevelOne implements LevelInformation {
         this.blocks.add(rightSide);
         this.blocks.add(deathRegion);
         this.blocks.add(indicator);
-        this.blocks.add(block);
 
         this.background = new Block(new Rectangle(new Point(50, 50), 500, 700), this.BACKGROUND_COLOR);
+
+        Block block;
+        Color color;
+        int atMiddle = 0;
+        int afterMiddle = 0;
+        for (int i = 0; i < 15; i++) {
+            if (i < 2) {
+                color = Color.red;
+            } else if (i < 4) {
+                color = Color.orange;
+            } else if (i < 6) {
+                color = Color.yellow;
+            } else if (i < 9) {
+                color = Color.green;
+                if (i == 7) {
+                    atMiddle = 10;
+                }
+                if (i == 8) {
+                    atMiddle = 0;
+                    afterMiddle = 10;
+                }
+            } else if (i < 11) {
+                color = Color.blue;
+            } else if (i < 13) {
+                color = Color.pink;
+            } else {
+                color = Color.cyan;
+            }
+            for (int j = 0; j < 3; j++) {
+                block = new Block(new Rectangle(new Point(50 + 46 * i + afterMiddle, 300 + 25 * j), 46 + atMiddle, 25), color);
+                this.blocks.add(block);
+            }
+        }
     }
 
     @Override
     public int numberOfBalls() {
-        return 1;
+        return 10;
     }
 
     @Override
@@ -85,7 +121,7 @@ public class LevelOne implements LevelInformation {
 
     @Override
     public int numberOfBlocksToRemove() {
-        return 1;
+        return 51;
     }
 
     public Color getBACKGROUND_COLOR() {

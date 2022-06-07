@@ -4,6 +4,7 @@ import biuoop.KeyboardSensor;
 import biuoop.Sleeper;
 
 import java.awt.*;
+import java.util.Random;
 
 
 public class GameLevel implements Animation {
@@ -41,7 +42,7 @@ public class GameLevel implements Animation {
         this.environment = new GameEnvironment();
 
         this.initialBalls = levelInformation.numberOfBalls();
-        this.initialBlocks = levelInformation.blocks().size() - 6;
+        this.initialBlocks = levelInformation.blocks().size();
 
         this.blockCounter = new Counter();
         this.blockCounter.increase(this.initialBlocks);
@@ -71,7 +72,7 @@ public class GameLevel implements Animation {
 
     // Initialize a new game: create the Blocks and Ball (and Paddle)
     // and add them to the game.
-    public void initialize() {
+    /*public void initialize() {
 
         this.gui = new GUI("Arkanoid", 800, 600);
         this.sleeper = new Sleeper();
@@ -162,9 +163,9 @@ public class GameLevel implements Animation {
 
         ball3.setGameEnvironment(this.environment);
         ball3.addToGame(this);
-    }
+    }*/
 
-    public void initialize2() {
+    /*public void initialize2() {
         this.gui = new GUI("Arkanoid", 800, 600);
         this.sleeper = new Sleeper();
         this.paddle = new Paddle(this.gui);
@@ -207,17 +208,18 @@ public class GameLevel implements Animation {
             ScoreIndicator scoreIndicator = new ScoreIndicator(block, this);
             scoreIndicator.addToGame(this);
         }
-    }
+    }*/
 
     public void initialize3() {
         this.gui = new GUI("Arkanoid", 800, 600);
         this.sleeper = new Sleeper();
         this.runner = new AnimationRunner(this.gui, this.sleeper);
         this.keyboard = this.gui.getKeyboardSensor();
+        this.paddle = new Paddle(this.gui, this.levelInformation.paddleWidth(), this.levelInformation.paddleSpeed());
 
         if (this.levelInformation.levelName().equals("Direct Hit")) {
             Ball ball = new Ball(new Point(400, 500), 4, Color.white);
-            ball.setVelocity(Velocity.fromAngleAndSpeed(-Math.PI / 2, 5));
+            ball.setVelocity(this.levelInformation.initialBallVelocities().get(0));
 
             ball.setStartPerimeterX(50);
             ball.setStartPerimeterY(50);
@@ -226,19 +228,37 @@ public class GameLevel implements Animation {
 
             ball.setGameEnvironment(this.environment);
             ball.addToGame(this);
+        } else {
+            Ball ball;
+            for (int i = 0; i < this.initialBalls; i++) {
+                Random random = new Random();
+                int x = random.nextInt(this.paddle.getWidth() + 1) + (800 - this.paddle.getWidth()) / 2;
+                Point p = new Point(x, 520);
+                ball = new Ball(p, 5, Color.white);
+                ball.setVelocity(this.levelInformation.initialBallVelocities().get(i));
+
+                ball.setStartPerimeterX(50);
+                ball.setStartPerimeterY(50);
+                ball.setEndPerimeterX(750);
+                ball.setEndPerimeterY(600);
+
+                ball.setGameEnvironment(this.environment);
+                ball.addToGame(this);
+            }
+
         }
+        this.paddle.addToGame(this);
 
         this.levelInformation.blocks().get(4).addHitListener(this.ballRemover);
 
-        this.levelInformation.blocks().get(6).addHitListener(this.blockRemover);
-        this.levelInformation.blocks().get(6).addHitListener(this.scoreTrackingListener);
+        for (int i = 6; i < this.initialBlocks; i++) {
+            this.levelInformation.blocks().get(i).addHitListener(this.blockRemover);
+            this.levelInformation.blocks().get(i).addHitListener(this.scoreTrackingListener);
+        }
 
         for (int i = 0; i < this.levelInformation.blocks().size(); i++) {
             this.levelInformation.blocks().get(i).addToGame(this);
         }
-
-        this.paddle = new Paddle(this.gui);
-        this.paddle.addToGame(this);
 
         ScoreIndicator scoreIndicator = new ScoreIndicator(this.levelInformation.blocks().get(5), this);
         scoreIndicator.addToGame(this);
@@ -303,13 +323,12 @@ public class GameLevel implements Animation {
         }
         if (this.levelInformation.levelName().equals("Direct Hit")) {
             d.setColor(Color.black);
-        } else {
-            d.setColor(Color.orange);
-        }
-        d.fillRectangle(0, 0, 800, 600);
-
-        if (this.levelInformation.levelName().equals("Direct Hit")) {
+            d.fillRectangle(50, 50, 700, 500);
             drawBackground1(d);
+        } else {
+            d.setColor(Color.white);
+            d.fillRectangle(50, 50, 700, 500);
+            drawBackGround(d);
         }
 
         this.paddle.addToGame(this);
@@ -345,7 +364,16 @@ public class GameLevel implements Animation {
         d.drawLine(375, 165, 255, 165);
     }
 
-    public void drawBackGround2(DrawSurface d) {
-
+    public void drawBackGround(DrawSurface d) {
+        d.setColor(Color.yellow);
+        for (int i = 0; i < 100; i++) {
+            d.drawLine(200, 150, 7 * i, 300);
+        }
+        d.setColor(new Color(245, 229, 185));
+        d.fillCircle(200, 150, 60);
+        d.setColor(new Color(234, 218, 149));
+        d.fillCircle(200, 150, 50);
+        d.setColor(new Color(255, 231, 28));
+        d.fillCircle(200, 150, 40);
     }
 }

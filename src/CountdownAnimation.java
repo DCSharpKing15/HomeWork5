@@ -15,14 +15,16 @@ public class CountdownAnimation implements Animation {
     }
 
     public void doOneFrame(DrawSurface d) {
-        if (this.gameScreen.getSpriteList().size() == 11) {
+        if (this.gameScreen.getSpriteList().size() == 10) {
             d.setColor(Color.black);
+            d.fillRectangle(50, 50, 700, 500);
+            drawBackground1(d);
         } else {
-            d.setColor(Color.orange);
+            d.setColor(Color.white);
+            d.fillRectangle(50, 50, 700, 500);
+            drawBackground(d);
         }
-        d.fillRectangle(0, 0, 800, 600);
         this.gameScreen.drawAllOn(d);
-        drawBackground1(d);
         d.setColor(Color.red);
         d.drawText(390, 60, "" + (countFrom - usedSeconds()), 30);
     }
@@ -47,5 +49,18 @@ public class CountdownAnimation implements Animation {
         d.drawLine(425, 165, 545, 165);
         d.drawLine(400, 190, 400, 310);
         d.drawLine(375, 165, 255, 165);
+    }
+
+    public void drawBackground(DrawSurface d) {
+        d.setColor(Color.yellow);
+        for (int i = 0; i < 100; i++) {
+            d.drawLine(200, 150, 7 * i, 300);
+        }
+        d.setColor(new Color(245, 229, 185));
+        d.fillCircle(200, 150, 60);
+        d.setColor(new Color(234, 218, 149));
+        d.fillCircle(200, 150, 50);
+        d.setColor(new Color(255, 231, 28));
+        d.fillCircle(200, 150, 40);
     }
 }
