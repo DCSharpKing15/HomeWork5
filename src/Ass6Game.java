@@ -3,7 +3,7 @@ import biuoop.GUI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ass5Game {
+public class Ass6Game {
     public static void main(String[] args) {
 
         LevelInformation level1 = new LevelOne();
