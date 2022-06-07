@@ -8,20 +8,20 @@ public class Paddle implements Sprite, Collidable {
     private KeyboardSensor keyboard;
     private Block block;
     private Color color;
-    private final int MOVE_PADDLE_X = 7;
+    private final int MOVE_PADDLE_X = 1;
     private final int START_PERIMETER_X = 50;
     private final int END_PERIMETER_X = 750;
     private final int START_PERIMETER_Y = 50;
     private final int END_PERIMETER_Y = 550;
-    private final int WIDTH = 50;
+    private final int WIDTH = 100;
     private final String TYPE_NAME = "Paddle";
     private int upperLeftX;
 
     public Paddle(GUI gui) {
         this.keyboard = gui.getKeyboardSensor();
         this.color = Color.cyan;
-        this.upperLeftX = 375;
-        this.block = new Block(new Rectangle(new Point(this.upperLeftX, 530), 50, 20), color);
+        this.upperLeftX = 350;
+        this.block = new Block(new Rectangle(new Point(this.upperLeftX, 530), this.WIDTH, 20), color);
     }
 
     @Override
@@ -29,24 +29,23 @@ public class Paddle implements Sprite, Collidable {
         return this.TYPE_NAME;
     }
 
-
     public void moveLeft() {
         if (this.block.getCollisionRectangle().getUpperLeft().getX() - MOVE_PADDLE_X > START_PERIMETER_X) {
-            this.block = new Block(new Rectangle(new Point(this.block.getCollisionRectangle().getUpperLeft().getX() - MOVE_PADDLE_X, 530), 50, 20), color);
+            this.block = new Block(new Rectangle(new Point(this.block.getCollisionRectangle().getUpperLeft().getX() - MOVE_PADDLE_X, 530), this.WIDTH, 20), color);
             this.upperLeftX = (int) this.block.getCollisionRectangle().getUpperLeft().getX();
         } else {
-            this.block = new Block(new Rectangle(new Point(START_PERIMETER_X, 530), 50, 20), color);
+            this.block = new Block(new Rectangle(new Point(START_PERIMETER_X, 530), this.WIDTH, 20), color);
             this.upperLeftX = START_PERIMETER_X;
         }
     }
 
     public void moveRight() {
         if (this.block.getCollisionRectangle().upperRight().getX() + MOVE_PADDLE_X < END_PERIMETER_X) {
-            this.block = new Block(new Rectangle(new Point(this.block.getCollisionRectangle().getUpperLeft().getX() + MOVE_PADDLE_X, 530), 50, 20), color);
+            this.block = new Block(new Rectangle(new Point(this.block.getCollisionRectangle().getUpperLeft().getX() + MOVE_PADDLE_X, 530), this.WIDTH, 20), color);
             this.upperLeftX = (int) this.block.getCollisionRectangle().getUpperLeft().getX();
         } else {
-            this.block = new Block(new Rectangle(new Point(END_PERIMETER_X - 50, 530), 50, 20), color);
-            this.upperLeftX = END_PERIMETER_X - 50;
+            this.block = new Block(new Rectangle(new Point(END_PERIMETER_X - this.WIDTH, 530), this.WIDTH, 20), color);
+            this.upperLeftX = END_PERIMETER_X - this.WIDTH;
         }
     }
 
@@ -112,13 +111,14 @@ public class Paddle implements Sprite, Collidable {
     }
 
     // Add this paddle to the game.
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         for (int i = 0; i < g.getEnvironment().getCollidableList().size(); i++) {
             if (g.getEnvironment().getCollidableList().get(i).getTypeName().equals(this.TYPE_NAME)) {
                 g.getEnvironment().getCollidableList().remove(i);
             }
         }
         g.addCollidable(this);
+        g.addSprite(this);
     }
 
 }

@@ -9,7 +9,6 @@ public class Block implements Collidable, Sprite, HitNotifier {
     private Color color;
     private final String TYPE_NAME = "Block";
     private java.util.List<HitListener> hitListeners;
-    ;
 
     public Block(Rectangle collisionRectangle, Color color) {
         this.collisionRectangle = collisionRectangle;
@@ -74,12 +73,12 @@ public class Block implements Collidable, Sprite, HitNotifier {
     public void timePassed() {
     }
 
-    public void addToGame(Game g) {
+    public void addToGame(GameLevel g) {
         g.addSprite(this);
         g.addCollidable(this);
     }
 
-    public void removeFromGame(Game game) {
+    public void removeFromGame(GameLevel game) {
         game.removeSprite(this);
         game.removeCollidable(this);
     }

@@ -1,3 +1,4 @@
+import javax.lang.model.type.NullType;
 import java.util.ArrayList;
 
 public class Line {
@@ -62,9 +63,9 @@ public class Line {
 
     // Returns the slope of the line;
     public double slope(Line line) {
-        if (line.start().getX() == line.end().getX()) {
+        /*if (line.start().getX() == line.end().getX()) {
             return 0;
-        }
+        }*/
         double slope = (double) (line.start().getY() - line.end().getY()) / (line.start().getX() - line.end().getX());
         return slope;
     }

@@ -29,6 +29,9 @@ public class Velocity {
     //fromAngleAndSpeed -- returns the calculated velocity from the angle and speed
     public static Velocity fromAngleAndSpeed(double angle, double speed) {
         double dx = speed * Math.cos(angle);
+        double r = Math.cos(angle);
+        double m = Math.acos(-1);
+        double pie = Math.PI;
         double dy = speed * Math.sin(angle);
         return new Velocity(dx, dy);
     }

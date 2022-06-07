@@ -1,7 +1,10 @@
 public class Ass5Game {
     public static void main(String[] args) {
-        Game game = new Game();
-        game.initialize();
+
+        LevelInformation level1 = new LevelOne();
+
+        GameLevel game = new GameLevel(level1);
+        game.initialize3();
         game.run();
     }
 }

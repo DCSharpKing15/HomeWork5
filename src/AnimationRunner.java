@@ -23,6 +23,7 @@ public class AnimationRunner {
             animation.doOneFrame(d);
 
             gui.show(d);
+
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
